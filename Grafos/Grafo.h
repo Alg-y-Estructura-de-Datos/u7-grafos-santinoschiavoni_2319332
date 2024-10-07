@@ -27,7 +27,8 @@ public:
     void eliminarNodo(const T& nodo);
     void eliminarArista(const T& origen, const T& destino);
     bool estanConectados(const T& origen, const T& destino);
-    bool buscarNodo(const T& nodo); // Declaración añadida
+    void buscarNodo(const T& nodo); // Declaración añadida
+    void imprimirConectados(const T& nodo); // Declaración añadida
     void imprimir();
 
 private:
@@ -57,8 +58,13 @@ void Grafo<T>::agregarNodo(const T& nodo) {
 }
 
 template <class T>
-bool Grafo<T>::buscarNodo(const T& nodo) {
-    return nodos.find(nodo) != nodos.end();
+void Grafo<T>::buscarNodo(const T& nodo) {
+    // Verificar si el nodo ya existe
+    if(nodos.find(nodo) != nodos.end()){
+        throw 601;
+    }else{
+        throw 600;
+    }
 }
 
 template <class T>
@@ -136,6 +142,24 @@ bool Grafo<T>::dfs(const T& origen, const T& destino, std::map<T, bool>& visitad
     }
     return false;
 }
+
+template <class T>
+// Imprime los nodos conectados al nodo ppal
+void Grafo<T>::imprimirConectados(const T& nodo) {
+    auto it = nodos.find(nodo);
+    if (it == nodos.end()) {
+        throw std::invalid_argument("Nodo no encontrado.");
+    }
+    
+    std::cout << "Nodos conectados a " << nodo << ": ";
+    
+    for (const auto& vecino : it->second->vecinos) {
+        std::cout << vecino.first->data << " ";
+    }
+    
+    std::cout << std::endl;
+}
+
 
 template <class T>
 void Grafo<T>::imprimir() {
